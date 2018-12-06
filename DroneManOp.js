@@ -1,3 +1,26 @@
+var weatherAPIkey= "205d5b7250932424c8062f648affe291";
+const weather = require('openweathermap-js');
+
+// weather.defaults({
+//     appid: weatherAPIkey,
+//     location: 'London',
+//     cityID: 1851632,	// Shuzenji, JP
+//     method: 'name',
+//     format: 'JSON',
+//     accuracy: 'accurate',
+//     units: 'imperial'
+// });
+
+
+
+weather.daily({method: 'coord', coord: {lat: -33.9, lon: 151.2, cnt: 3}}, function(err, data) {
+    if (!err)
+        console.log(data);
+    else
+        console.error(err.message);
+});
+
+console.log(weather);
 
 var mysql = require('mysql');
 
@@ -8,14 +31,9 @@ var con = mysql.createConnection({
   database: "DroneOp"
 });
 
-//
-// con.connect(function(err) {
-//   if (err) throw err;
-//   console.log("Connected!");
-// });
-
 con.connect(function(err) {
   if (err) throw err;
+  //CONNECT TO CREW
   con.query("SELECT * FROM DroneOp.crew", function (err, result, fields) {
     if (err) throw err;
     var json = JSON.parse(JSON.stringify(result));
@@ -30,6 +48,7 @@ con.connect(function(err) {
     });
   });
   console.log("---------");
+  //CONNECT TO EQUIPMENT
   con.query("SELECT * FROM DroneOp.equipment", function (err, result, fields) {
     if (err) throw err;
     var json = JSON.parse(JSON.stringify(result));
@@ -39,7 +58,9 @@ con.connect(function(err) {
       console.log("");
     });
   });
+
   console.log("---------");
+  //CONNECT TO EQUIPMENT DETAILS
   con.query("SELECT * FROM DroneOp.equip_details", function (err, result, fields) {
     if (err) throw err;
     var json = JSON.parse(JSON.stringify(result));
