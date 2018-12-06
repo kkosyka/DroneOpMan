@@ -1,15 +1,21 @@
+from django import forms
+import django
 import mysql.connector
 from datetime import date
 import datetime
+from weather import Weather, Unit
+# import tkinter as tk
+
+conn = mysql.connector.connect(user='root', password='',
+                               host='127.0.0.1',
+                               database='DroneOp')
+cursor = conn.cursor()
+queryCrew = "SELECT * FROM DroneOp.crew"
+queryEquip = "SELECT * FROM DroneOp.Equipment"
+queryEquip_deet = "SELECT * FROM DroneOp.equip_details"
 
 def main():
-    conn = mysql.connector.connect(user='root', password='',
-                      host='127.0.0.1',
-                      database='DroneOp')
-    cursor = conn.cursor()
-    queryCrew = ("SELECT * FROM DroneOp.crew")
-    queryEquip = ("SELECT * FROM DroneOp.Equipment")
-    queryEquip_deet = ("SELECT * FROM DroneOp.equip_details")
+
     #
     # print("CREW")
     # cursor.execute(queryCrew)
@@ -87,4 +93,27 @@ def main():
     cursor.close()
     conn.close()
 
+    weather = Weather(unit=Unit.FAHRENHEIT)
+    location = weather.lookup_by_location('northampton, ma')
+    condition = location.condition
+    temp = location.condition
+    print(condition.text)
+    print(condition.temp)
+
+    lookup = weather.lookup_by_latlng(42.318274,-72.637246)
+    condition = lookup.condition
+    temp = location.condition
+    print(condition.text)
+    print(condition.temp)
+
+    print(django.get_version())
 main()
+
+
+
+
+
+"""
+https://stackoverflow.com/questions/372885/how-do-i-connect-to-a-mysql-database-in-python
+
+"""
