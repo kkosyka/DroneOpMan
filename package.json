@@ -1,0 +1,26 @@
+{
+  "name": "droneopman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "DroneManOp.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "leaflet": "^1.3.4",
+    "mysql": "^2.16.0",
+    "openweathermap-js": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkosyka/DroneOpMan.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kkosyka/DroneOpMan/issues"
+  },
+  "homepage": "https://github.com/kkosyka/DroneOpMan#readme"
+}
