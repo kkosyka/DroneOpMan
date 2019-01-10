@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Drone Operation Manual</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <!-- <link href="../static/css/signup.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <!-- <script src="../static/js/signUp.js"></script> -->
+  </head>
+
+  <body>
+      <h1>Drone Operation Manual</h1>
+      <h2>Form</h2>
+      <div class="jumbotron">
+
+        <form class="form-signin">
+        <h1>PILOT</h1>
+
+        <select id="inputPilot" name="res" method="GET" action="/">
+          <option value="{{res[0]}}" selected>{{res[0]}}</option>
+          {% for r in res[1:] %}
+            <option value="{{r.pilot}}">{{r.pilot}}</option>
+          {% endfor %}
+        </select>
+
+        <input type="text" name="PicTitle" id="PicTitle" class="form-control" placeholder="PIC Title" readonly>
+        <input type="text" name="FaaUasCertNum" id="faaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
+        <input type="text" name="IssueOn" id="IssueOn" class="form-control" placeholder="Issued On" readonly>
+        <input type="text" name="ValidUntil" id="ValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
+        <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly>
+
+        <!--
+        <h1>MODEL</h1>
+        <input type="text" name="inputAircraftMod" id="inputAircraftMod" class="form-control" placeholder="Aircraft Model" readonly>
+        <input type="text" name="inputDrones" id="inputDrones" class="form-control" placeholder="List of Drones" readonly>
+
+        <h1>DRONE</h1>
+        <input type="text" name="inputDrone" id="inputDrone" class="form-control" placeholder="Drone" readonly>
+        <input type="text" name="inputFAAReg" id="inputFAAReg" class="form-control" placeholder="Drone FAA Reg" readonly>
+        <input type="text" name="inputIssueOn" id="inputIssueOn" class="form-control" placeholder="Issued On" rreadonly>
+        <input type="text" name="inputValidUntil" id="inputValidUntil" class="form-control" placeholder="PIC Title" rreadonly>
+        <input type="text" name="inputSerialNum" id="inputSerialNum" class="form-control" placeholder="Serial Num" readonly>
+        -->
+
+        <h1>LOCATION</h1>
+        <div style="height:500px;" id="mapid"></div>
+        <br>
+        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
+      </form>
+      </div>
+
+
+
+      <footer class="footer">
+        <p>&copy; Company 2015</p>
+      </footer>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    var currLat = 0;
+    var currLong = 0;
+    var mymap = L.map('mapid').setView([42.318032, -72.637384], 16);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'your.mapbox.access.token'
+    }).addTo(mymap);
+    var myMarker = L.marker([42.318032, -72.637384], {title: "MyLocation", alt: "MyLocation", draggable: true})
+    .addTo(mymap)
+    .on('dragend', function() {
+      var coord = String(myMarker.getLatLng()).split(',');
+      var currLat = coord[0].split('(')[1];
+      var currLong = coord[1].split(')')[0];
+      myMarker.bindPopup("Current Location: " + currLat + ", " + currLong + ".");
+    });
+
+  </script>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+  </style>
+  <head>
+      <meta charset="UTF-8">
+      <title>Crew</title>
+  </head>
+  <body>
+    <h1>CREW</h1>
+    <table id="crew" style="width:100%">
+        {% if result %}
+        <tr>
+            <th>Pilot</th>
+            <th>PIC Title</th>
+            <th>FAA UAS Cert Num</th>
+            <th>Issue On</th>
+            <th>Valid Until</th>
+            <th>AMA Number</th>
+        </tr>
+        {% for row in result %}
+        <tr>
+            <td> {{ row.pilot }}</td>
+            <td> {{ row.pic_title }}</td>
+            <td> {{ row.faa_uas_cert_num }}</td>
+            <td> {{ row.issue_on }}</td>
+            <td> {{ row.valid_until }}</td>
+            <td> {{ row.ama_num }}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+  </body>
+</html>
