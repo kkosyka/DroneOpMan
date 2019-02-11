@@ -46,6 +46,7 @@ class Database:
         return result
 
     def list_equipment(self):
+        self.cur = self.con.cursor()
         self.cur.execute("SELECT * FROM DroneOp.equipment")
         result = self.cur.fetchall()
         self.cur.close
@@ -53,6 +54,7 @@ class Database:
         return result
 
     def list_models_equipment(self):
+        self.cur = self.con.cursor()
         self.cur.execute("SELECT aircraft_mod FROM DroneOp.equipment")
         row_headers=[x[0] for x in self.cur.description] #this will extract row headers
         result = self.cur.fetchall()
@@ -69,6 +71,7 @@ class Database:
         return result
 
     def list_equip_details(self):
+        self.cur = self.con.cursor()
         self.cur.execute("SELECT * FROM DroneOp.equip_details")
         result = self.cur.fetchall()
         self.cur.close
@@ -109,6 +112,7 @@ def form():
     crewRes.insert(0,tempName)
     modelRes.insert(0, tempModel)
     # conditionText, temp = weather()
+    # return render_template('form.html', crewRes=crewRes)
     return render_template('form.html', crewRes=crewRes, modelRes=modelRes)
 
 # @app.route('/update')
@@ -148,6 +152,19 @@ def update_model_info():
     list = str(res['drones']).split(",")
     return flask.jsonify({"result":list})
 
+@app.route('/update_drone_info')
+def update_model_info():
+    # selectedModel = request.args.get('selectedModel')
+    # def db_query():
+    #     db = Database()
+    #     modelInfo = db.get_model(selectedModel)
+    #     return modelInfo
+    # r = json.dumps(db_query())
+    # res = json.loads(r)[0]
+    # list = str(res['drones']).split(",")
+    list = 'test'
+    return flask.jsonify({"result":list})
+
 
 
 # @app.route('/update_pilot_info')
@@ -161,15 +178,15 @@ def update_model_info():
 #     # return res
 #     return flask.jsonify({"result":selectedPilot})
 
-@app.route('/list_crew', methods=['POST','GET'])
-def crew():
-    def db_query():
-        db = Database()
-        crew = db.list_crew()
-        # crew = crew['pilot']
-        return crew
-    res = db_query()
-    return render_template('list_crew.html', result=res, content_type='application/json')
+# @app.route('/list_crew', methods=['POST','GET'])
+# def crew():
+#     def db_query():
+#         db = Database()
+#         crew = db.list_crew()
+#         # crew = crew['pilot']
+#         return crew
+#     res = db_query()
+#     return render_template('list_crew.html', result=res, content_type='application/json')
 
 
 

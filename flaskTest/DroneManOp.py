@@ -43,7 +43,7 @@
 #     # queryCrew = "test"
 #     queryModel = "Mavic 4 Pro"
 #     queryDrone = "Pebble"
-# 
+#
 #     # query = ("SELECT * FROM DroneOp.crew WHERE pilot = 'Jon Caris'")
 #     query = ("SELECT * FROM DroneOp.crew WHERE pilot = '" + queryCrew + "'")
 #     cursor.execute(query)

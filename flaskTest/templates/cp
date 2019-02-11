@@ -1,0 +1,20 @@
+<h1>DRONE</h1>
+<!-- // <input type="text" name="inputAircraftMod" id="inputAircraftMod" class="form-control" placeholder="Aircraft Model" readonly> -->
+<!-- // <input type="text" name="inputDrones" id="inputDrones" class="form-control" placeholder="List of Drones" readonly> --> -->
+
+<!-- <div class='wrapper3'>
+  <!-- <select id="inputDrone" name="res" method="GET" action="/"> -->
+    <!-- <option value="{{droneRes[0]}}" selected>{{droneRes[0]}}</option> -->
+    <!-- {% for r in droneRes[1:] %} -->
+      <!-- <option id="selectedDrone" name="selectedDrone" value="{{r.aircraft_mod}}">{{r.aircraft_mod}}</option> -->
+    <!-- {% endfor %}
+  <!-- </select> -->
+  <!-- <button class='get_drone_result'>Calculate</button> -->
+  <!-- <div class='drone' ></div> -->
+<!-- </div> -->
+<!-- // <input type="text" name="inputDrone" id="inputDrone" class="form-control" placeholder="Drone" readonly>
+// <input type="text" name="inputFAAReg" id="inputFAAReg" class="form-control" placeholder="Drone FAA Reg" readonly>
+// <input type="text" name="inputIssueOn" id="inputIssueOn" class="form-control" placeholder="Issued On" rreadonly>
+// <input type="text" name="inputValidUntil" id="inputValidUntil" class="form-control" placeholder="PIC Title" rreadonly>
+// <input type="text" name="inputSerialNum" id="inputSerialNum" class="form-control" placeholder="Serial Num" readonly>
+// -->

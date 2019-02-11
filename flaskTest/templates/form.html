@@ -24,7 +24,7 @@
              $("#faaUasCertNum").val(response.FaaUasCertNum.toString());
              $("#IssueOn").val(response.IssueOn.toString());
              $("#ValidUntil").val(response.ValidUntil.toString());
-             $("#AmaNum").val(response.AmaNum.toString());
+
            },
           });
        });
@@ -42,6 +42,7 @@
             var s = $('<select/>');
             for (var i in response.result) {
               s.append($('<option>', {
+                  name: 'selectedDrone',
                   value: response.result[i],
                   text: response.result[i]
               }));
@@ -52,7 +53,34 @@
           });
        });
      });
+
+     //DRONE
+      $(document).ready(function(){
+        $('.wrapper2').on('click', '.get_drone_result', function(){
+           var selectedModel = $("#selectedDrone").val();
+           $.ajax({
+            url: "/update_drone_info",
+            type: "get",
+            data: {selectedModel: selectedModel},
+            success: function(response) {
+              $(".test").val('hello');
+              // div class='drone_list'
+             // var s = $('<select/>');
+             // for (var i in response.result) {
+             //   s.append($('<option>', {
+             //       name: 'selectedDrone',
+             //       value: response.result[i],
+             //       text: response.result[i]
+             //   }));
+             //
+             // }
+             // $('.drone_list').append(s);
+            },
+           });
+        });
+      });
   </script>
+
   <body>
       <h1>Drone Operation Manual</h1>
 
@@ -75,8 +103,8 @@
         <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly>
 
         <h1>MODEL</h1>
-        <!-- <input type="text" name="inputAircraftMod" id="inputAircraftMod" class="form-control" placeholder="Aircraft Model" readonly>
-        <input type="text" name="inputDrones" id="inputDrones" class="form-control" placeholder="List of Drones" readonly> -->
+        <!-- // <input type="text" name="inputAircraftMod" id="inputAircraftMod" class="form-control" placeholder="Aircraft Model" readonly>
+        // <input type="text" name="inputDrones" id="inputDrones" class="form-control" placeholder="List of Drones" readonly> -->
 
         <div class='wrapper2'>
           <select id="inputModel" name="res" method="GET" action="/">
@@ -87,25 +115,20 @@
           </select>
           <button class='get_model_result'>Calculate</button>
           <div class='drone_list' ></div>
-          <div id="dropListBuilding"></div>
-          <!-- <div class='result1'></div> -->
-
+          <button class='get_drone_result'>Calculate</button>
+          <!-- <div class='test'></div> -->
+          <input type="text" name="test" id="test" class="form-control" placeholder="TEST" readonly>
         </div>
 
         <!-- <input type="text" name="PicTitle" id="PicTitle" class="form-control" placeholder="PIC Title" readonly>
-        <input type="text" name="FaaUasCertNum" id="faaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
-        <input type="text" name="IssueOn" id="IssueOn" class="form-control" placeholder="Issued On" readonly>
-        <input type="text" name="ValidUntil" id="ValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
-        <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly> -->
+        // <input type="text" name="FaaUasCertNum" id="faaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
+        // <input type="text" name="IssueOn" id="IssueOn" class="form-control" placeholder="Issued On" readonly>
+        // <input type="text" name="ValidUntil" id="ValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
+        // <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly> -->
 
-<!--
+
         <h1>DRONE</h1>
-        <input type="text" name="inputDrone" id="inputDrone" class="form-control" placeholder="Drone" readonly>
-        <input type="text" name="inputFAAReg" id="inputFAAReg" class="form-control" placeholder="Drone FAA Reg" readonly>
-        <input type="text" name="inputIssueOn" id="inputIssueOn" class="form-control" placeholder="Issued On" rreadonly>
-        <input type="text" name="inputValidUntil" id="inputValidUntil" class="form-control" placeholder="PIC Title" rreadonly>
-        <input type="text" name="inputSerialNum" id="inputSerialNum" class="form-control" placeholder="Serial Num" readonly>
-        -->
+
 
         <h1>LOCATION</h1>
         <div style="height:500px;" id="mapid"></div>
