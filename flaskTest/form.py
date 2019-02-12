@@ -19,8 +19,7 @@ class Database:
         db = 'DroneOp'
         port=5000
 
-        self.con = pymysql.connect(host=host, user=user, password=password, db=db, autocommit=True, cursorclass=pymysql.cursors.
-                                   DictCursor)
+        self.con = pymysql.connect(host=host, user=user, password=password, db=db, autocommit=True, cursorclass=pymysql.cursors.DictCursor)
 
     def list_crew_names(self):
         self.cur = self.con.cursor()
@@ -83,7 +82,7 @@ class Database:
     # def submit_form(self, date,pilot, pilot_pic_title, pilot_faa_uas_cert_num,
     #     pilot_issue_on, pilot_valid_until, pilot_ama_num, drone_model, drone, lat, long,
     #      temp, tempText):
-    def submit_form(self, today, temp):
+    def submit_form(self):
         self.cur = self.con.cursor()
         # query = "INSERT INTO DroneOp.flight_log ("+'date'+","+'pilot'+","+'pilot_pic_title'+","+'pilot_faa_uas_cert_num'+","+
         #     'pilot_issue_on'+","+'pilot_valid_until'+","+ 'pilot_ama_num'+","+ 'drone_model'+","+ 'drone'+","+ 'lat'+","+ 'long'+","+
@@ -95,13 +94,15 @@ class Database:
         # query = "INSERT INTO DroneOp.flight_log (date) VALUES ('2008-01-01 00:00:50')";
         # query =  """INSERT INTO b (source_id,text,author,score,type,location) VALUES ('%s','%s','%s','%s','%s','%s')""" %
         # query =  """INSERT INTO DroneOp.flight_log (date,temp) VALUES ('%s','%s')""" % ('2008-01-01 00:00:50', '29')
-        sql = "INSERT INTO `DroneOp`.`flight_log` (`today`, `temp`) VALUES (%s, %s)"
+        # sql = """INSERT INTO DroneOp.test (test, test1) VALUES ("%s", "%s")"""
         # cursor.execute(sql, ('2008-01-01 00:00:50', '29'))
-        self.cur.execute(sql, ('2008-01-01 00:00:50', '29'))
+        # self.cur.execute(sql, (5, '29'))
+        insertStatement = "INSERT INTO DroneOp.test (test, test1) VALUES (9,\"test\")"
+        self.cur.execute(insertStatement)
         result = self.cur.fetchall()
-        self.con.commit
         self.cur.close
         self.con.close
+        result = "yup"
         return result
 
 @app.route('/')
@@ -200,11 +201,11 @@ def submit():
     # + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +temp + "," + tempText;
     def db_query():
         db = Database()
-        submit = db.submit_form(today, temp)
+        submit = db.submit_form()
         db.commit()
         return submit
-
-    return flask.jsonify({"results": submit})
+    db_query()
+    return flask.jsonify({"results": "submit"})
     #curr date
     # //pilot
     # selectedPilot
