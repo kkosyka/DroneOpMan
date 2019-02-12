@@ -41,7 +41,7 @@ class Database:
 
     def get_pilot(self, name):
         self.cur = self.con.cursor()
-        self.cur.execute("SELECT * FROM DroneOp.crew WHERE pilot = '" + name +"'");
+        self.cur.execute("SELECT * FROM DroneOp.crew WHERE pilot = '" + name +"'")
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
@@ -66,7 +66,7 @@ class Database:
 
     def get_model(self, name):
         self.cur = self.con.cursor()
-        self.cur.execute("SELECT * FROM DroneOp.equipment WHERE aircraft_mod = '" + name +"'");
+        self.cur.execute("SELECT * FROM DroneOp.equipment WHERE aircraft_mod = '" + name +"'")
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
@@ -92,8 +92,12 @@ class Database:
         #          pilot_issue_on+"','"+pilot_valid_until+"','"+pilot_ama_num+"','"+drone_model+"','"+drone+"','"+lat+"','"+long+"','"+
         #           temp+"','"+tempText+"'"+")"
         # query = "INSERT INTO DroneOp.flight_log (date, temp) VALUES ( "+ date + ", " + temp + ")"
-        query = "INSERT INTO DroneOp.flight_log (date) VALUES ('2008-01-01 00:00:50')";
-        self.cur.execute(query)
+        # query = "INSERT INTO DroneOp.flight_log (date) VALUES ('2008-01-01 00:00:50')";
+        # query =  """INSERT INTO b (source_id,text,author,score,type,location) VALUES ('%s','%s','%s','%s','%s','%s')""" %
+        # query =  """INSERT INTO DroneOp.flight_log (date,temp) VALUES ('%s','%s')""" % ('2008-01-01 00:00:50', '29')
+        sql = "INSERT INTO `DroneOp`.`flight_log` (`today`, `temp`) VALUES (%s, %s)"
+        # cursor.execute(sql, ('2008-01-01 00:00:50', '29'))
+        self.cur.execute(sql, ('2008-01-01 00:00:50', '29'))
         result = self.cur.fetchall()
         self.con.commit
         self.cur.close
