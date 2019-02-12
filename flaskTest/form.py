@@ -6,6 +6,7 @@ import pymysql
 from datetime import date
 import datetime
 # from weather import Weather, Unit
+from darksky import forecast
 
 app = Flask(__name__)
 
@@ -78,26 +79,11 @@ class Database:
         self.con.close
         return result
 
-# def weather():
-#     weather = Weather(unit=Unit.FAHRENHEIT)
-#     # location = weather.lookup_by_location('northampton, ma')
-#     # condition = location.condition
-#     # temp = location.condition
-#     # print(condition.text)
-#     # print(condition.temp)
-#
-#     lookup = weather.lookup_by_latlng(42.318274,-72.637246)
-#     condition = lookup.condition
-#     temp = location.condition
-#     # print(condition.text)
-#     # print(condition.temp)
-#     return condition.text, condition.temp
-#
+
 
 @app.route('/')
 def init():
-    return render_template('index1.html')
-    # return 'test'
+    return render_template('index.html')
 
 @app.route('/form', methods=['POST','GET'])
 def form():
@@ -139,7 +125,7 @@ def update_pilot_info():
                             "IssueOn":str(res['issue_on']),
                             "ValidUntil":str(res['valid_until']),
                             "AmaNum":str(res['ama_num'])})
-
+#
 @app.route('/update_model_info')
 def update_model_info():
     selectedModel = request.args.get('selectedModel')
@@ -151,10 +137,10 @@ def update_model_info():
     res = json.loads(r)[0]
     list = str(res['drones']).split(",")
     return flask.jsonify({"result":list})
-
+#
 @app.route('/update_drone_info')
-def update_model_info():
-    # selectedModel = request.args.get('selectedModel')
+def update_drone_info():
+    selectedDrone = request.args.get('selectedDrone')
     # def db_query():
     #     db = Database()
     #     modelInfo = db.get_model(selectedModel)
@@ -162,20 +148,42 @@ def update_model_info():
     # r = json.dumps(db_query())
     # res = json.loads(r)[0]
     # list = str(res['drones']).split(",")
-    list = 'test'
-    return flask.jsonify({"result":list})
+    # list = 'test'
+    return flask.jsonify({"result":selectedDrone})
+#
+
+
+@app.route('/get_weather')
+def weather():
+    key = "fd3f206d4c0f54c400bb09fd3ed45d55"
+    currLocation = forecast(key, 42.3601, -71.0589)
+    # weather = Weather(unit=Unit.FAHRENHEIT)
+    # # location = weather.lookup_by_location('northampton, ma')
+    # # condition = location.condition
+    # # temp = location.condition
+    # # print(condition.text)
+    # # print(condition.temp)
+    #
+    # lat = request.args.get('lat')
+    # # long = request.args.get('long')
+    # lookup = weather.lookup_by_latlng(42.318032,-72.637384)
+    # condition = lookup.condition
+    # # weather = location.condition
+    # # print(condition.text)
+    # # print(condition.temp)
+    return flask.jsonify({"temp": currLocation.temperature}, {"text":currLocation.summary})
 
 
 
 # @app.route('/update_pilot_info')
 # def update_pilot_info():
 #     selectedPilot = request.args.get('selectedPilot')
-#     # def db_query():
-#     #     db = Database()
-#     #     pilotInfo = db.get_pilot()
-#     #     return pilotInfo
-#     # res = db_query()
-#     # return res
+#     def db_query():
+#         db = Database()
+#         pilotInfo = db.get_pilot()
+#         return pilotInfo
+#     res = db_query()
+#     return res
 #     return flask.jsonify({"result":selectedPilot})
 
 # @app.route('/list_crew', methods=['POST','GET'])
@@ -187,9 +195,6 @@ def update_model_info():
 #         return crew
 #     res = db_query()
 #     return render_template('list_crew.html', result=res, content_type='application/json')
-
-
-
 #
 # @app.route('/list_equipment', methods=['POST','GET'])
 # def equip():
