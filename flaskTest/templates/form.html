@@ -84,14 +84,14 @@
         $('.wrapper5').on('click', '.get_weather', function(){
            var lat = $("#currLat").val();
            var long = $("#currLong").val();
+           var latlng = lat + "," + long;
            $.ajax({
             url: "/get_weather",
             type: "get",
-            data: {lat: lat, long:long},
+            data: {latlng: latlng},
             success: function(response) {
-             // $("#weather").val(response.text.toString());
              $("#weatherTemp").val(response.temp);
-             // $("#weatherSumm").val(response.summary);
+             $("#weatherSumm").val(response.text);
             },
            });
         });
@@ -154,7 +154,7 @@
           <h1>WEATHER</h1>
           <button class='get_weather'>Get Weather</button>
           <input type="text" name="weatherTemp" id="weatherTemp" class="form-control" placeholder="weatherTemp" readonly>
-          <!-- <input type="text" name="weatherSumm" id="weatherSumm" class="form-control" placeholder="weatherSumm" readonly> -->
+          <input type="text" name="weatherSumm" id="weatherSumm" class="form-control" placeholder="weatherSumm" readonly>
           <br>
         </div>
         <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
@@ -167,6 +167,8 @@
   <script type="text/javascript">
     var currLat = 42.318032;
     var currLong = -72.637384;
+    document.getElementById("currLat").value = currLat;
+    document.getElementById("currLong").value = currLong;
     var map = L.map('map').setView([42.318032, -72.637384], 16);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',

@@ -156,22 +156,11 @@ def update_drone_info():
 @app.route('/get_weather')
 def weather():
     key = "fd3f206d4c0f54c400bb09fd3ed45d55"
-    currLocation = forecast(key, 42.3601, -71.0589)
-    # weather = Weather(unit=Unit.FAHRENHEIT)
-    # # location = weather.lookup_by_location('northampton, ma')
-    # # condition = location.condition
-    # # temp = location.condition
-    # # print(condition.text)
-    # # print(condition.temp)
-    #
-    # lat = request.args.get('lat')
-    # # long = request.args.get('long')
-    # lookup = weather.lookup_by_latlng(42.318032,-72.637384)
-    # condition = lookup.condition
-    # # weather = location.condition
-    # # print(condition.text)
-    # # print(condition.temp)
-    return flask.jsonify({"temp": currLocation.temperature}, {"text":currLocation.summary})
+    latlng = request.args.get('latlng').replace(" ", "")
+    lat = latlng.split(",")[0]
+    long = latlng.split(",")[1]
+    currLocation = forecast(key, lat, long)
+    return flask.jsonify({"temp": currLocation.temperature, "text": currLocation.summary})
 
 
 
