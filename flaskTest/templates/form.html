@@ -90,12 +90,45 @@
             type: "get",
             data: {latlng: latlng},
             success: function(response) {
-             $("#weatherTemp").val(response.temp);
-             $("#weatherSumm").val(response.text);
+             $('#weatherTemp').val(response.temp);
+             $('#weatherSumm').val(response.text);
             },
            });
         });
       });
+
+      //SUBMIT
+      $(document).ready(function(){
+        $('.wrapper6').on('click', '.submit_form', function(){
+            var pilot = $("#selectedPilot").val();
+            var FaaUasCertNum = $("#FaaUasCertNum").val();
+           var IssueOn = $("#IssueOn").val();
+           var ValidUntil = $("#ValidUntil").val();
+
+           var AmaNum = $("#AmaNum").val();
+          var selectedModel = $("#selectedModel").val();
+          // var long = $("#currLong").val(); //drone
+
+           var lat = $("#currLat").val();
+           var long = $("#currLong").val();
+           var temp = $("#weatherTemp").val();
+           var tempText = $("#weatherSumm").val();
+           // var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
+           //            + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +
+           //             temp + "," + tempText;
+           var data = temp
+           $.ajax({
+            url: "/submit",
+            type: "get",
+            data: {data: data},
+            success: function(response) {
+              $("#submitForm").val(response.results);
+             // $("#submit").val(response.results);
+           },
+          });
+       });
+     });
+
   </script>
 
   <body>
@@ -155,13 +188,13 @@
           <button class='get_weather'>Get Weather</button>
           <input type="text" name="weatherTemp" id="weatherTemp" class="form-control" placeholder="weatherTemp" readonly>
           <input type="text" name="weatherSumm" id="weatherSumm" class="form-control" placeholder="weatherSumm" readonly>
-          <br>
         </div>
-        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
-      </form>
-      </div>
 
-    </div>
+        <div class='wrapper6'>
+          <button id="submit_form" class='submit_form' type="button">Submit Form</button>
+          <input type="text" name="submitForm" id="submitForm" placeholder="!!" readonly>
+        </div>
+      </div>
   </body>
 
   <script type="text/javascript">
@@ -200,8 +233,23 @@
 - append entry to db
   - make a db for entries
 
+//pilot
+selectedPilot
+PicTitle
+FaaUasCertNum
+IssueOn
+ValidUntil
+AmaNum
+//model
+inputAircraftMod
 
+//drone
+selectedDrone
 
-
+//location/weather
+currLat
+currLong
+weatherTemp
+weatherSumm
 
  -->

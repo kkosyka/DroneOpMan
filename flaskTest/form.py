@@ -11,6 +11,7 @@ from darksky import forecast
 app = Flask(__name__)
 
 class Database:
+    # database related to obtaining info
     def __init__(self):
         host = '127.0.0.1'
         user = 'root'
@@ -18,7 +19,7 @@ class Database:
         db = 'DroneOp'
         port=5000
 
-        self.con = pymysql.connect(host=host, user=user, password=password, db=db, cursorclass=pymysql.cursors.
+        self.con = pymysql.connect(host=host, user=user, password=password, db=db, autocommit=True, cursorclass=pymysql.cursors.
                                    DictCursor)
 
     def list_crew_names(self):
@@ -79,7 +80,25 @@ class Database:
         self.con.close
         return result
 
-
+    # def submit_form(self, date,pilot, pilot_pic_title, pilot_faa_uas_cert_num,
+    #     pilot_issue_on, pilot_valid_until, pilot_ama_num, drone_model, drone, lat, long,
+    #      temp, tempText):
+    def submit_form(self, today, temp):
+        self.cur = self.con.cursor()
+        # query = "INSERT INTO DroneOp.flight_log ("+'date'+","+'pilot'+","+'pilot_pic_title'+","+'pilot_faa_uas_cert_num'+","+
+        #     'pilot_issue_on'+","+'pilot_valid_until'+","+ 'pilot_ama_num'+","+ 'drone_model'+","+ 'drone'+","+ 'lat'+","+ 'long'+","+
+        #      'temp'+","+ 'tempText') VALUES
+        #      (+"'"+date+"','"+pilot+"','"+pilot_pic_title+"','"+pilot_faa_uas_cert_num+"','"+
+        #          pilot_issue_on+"','"+pilot_valid_until+"','"+pilot_ama_num+"','"+drone_model+"','"+drone+"','"+lat+"','"+long+"','"+
+        #           temp+"','"+tempText+"'"+")"
+        # query = "INSERT INTO DroneOp.flight_log (date, temp) VALUES ( "+ date + ", " + temp + ")"
+        query = "INSERT INTO DroneOp.flight_log (date) VALUES ('2008-01-01 00:00:50')";
+        self.cur.execute(query)
+        result = self.cur.fetchall()
+        self.con.commit
+        self.cur.close
+        self.con.close
+        return result
 
 @app.route('/')
 def init():
@@ -162,6 +181,46 @@ def weather():
     currLocation = forecast(key, lat, long)
     return flask.jsonify({"temp": currLocation.temperature, "text": currLocation.summary})
 
+@app.route('/submit')
+def submit():
+    today = datetime.datetime.now()
+    submit = 1
+    temp = request.args.get('data')
+    # data = request.args.get('data').split(",")
+    # pilot =data[0]
+    # FaaUasCertNum = data[1]
+    # IssueOn = data[2]
+    # ValidUntil = data[3]
+    # temp = data[8]
+    # var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
+    # + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +temp + "," + tempText;
+    def db_query():
+        db = Database()
+        submit = db.submit_form(today, temp)
+        db.commit()
+        return submit
+
+    return flask.jsonify({"results": submit})
+    #curr date
+    # //pilot
+    # selectedPilot
+    # PicTitle
+    # FaaUasCertNum
+    # IssueOn
+    # ValidUntil
+    # AmaNum
+    # //model
+    # inputAircraftMod
+    #
+    # //drone
+    # selectedDrone
+    #
+    # //location/weather
+    # currLat
+    # currLong
+    # weatherTemp
+    # weatherSumm
+
 
 
 # @app.route('/update_pilot_info')
@@ -207,3 +266,34 @@ def weather():
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
+
+
+
+"""
+
+CREATE TABLE `DroneOp`.`flight_log` (
+  `date` DATETIME NOT NULL,
+  `pilot` VARCHAR(45) NULL,
+  `pilot_pic_title` VARCHAR(45) NULL,
+  `pilot_faa_uas_cert_num` VARCHAR(45) NULL,
+  `pilot_issue_on` VARCHAR(45) NULL,
+  `pilot_valid_until` VARCHAR(45) NULL,
+  `pilot_ama_num` VARCHAR(45) NULL,
+  `drone_model` VARCHAR(45) NULL,
+  `drone` VARCHAR(45) NULL,
+  `lat` VARCHAR(45) NULL,
+  `long` VARCHAR(45) NULL,
+  `temp` VARCHAR(45) NULL,
+  `tempText` VARCHAR(45) NULL,
+  PRIMARY KEY (`date`));
+
+
+
+INSERT INTO `DroneOp`.`flight_log` (`date`, `pilot`, `pilot_pic_title`, `pilot_faa_uas_cert_num`,
+    `pilot_issue_on`, `pilot_valid_until`, `pilot_ama_num`, `drone_model`, `drone`, `lat`, `long`,
+     `temp`, `tempText`) VALUES
+     ('01-01-01', 'fgdh', 'fgh', 'dgfhdfgh', 'gfh', 'ssfg', 'rewgrg',
+     'wreg', 'gwre', '456', '53', '34', 'dgfh');
+
+
+"""
