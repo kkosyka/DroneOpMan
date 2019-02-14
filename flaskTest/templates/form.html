@@ -111,12 +111,13 @@
 
            var lat = $("#currLat").val();
            var long = $("#currLong").val();
-           var temp = $("#weatherTemp").val();
+           // var temp = $("#weatherTemp").val();
+           var temp = 92.12;
            var tempText = $("#weatherSumm").val();
            // var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
            //            + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +
            //             temp + "," + tempText;
-           var data = temp
+           var data = temp;
            $.ajax({
             url: "/submit",
             type: "get",

@@ -82,7 +82,7 @@ class Database:
     # def submit_form(self, date,pilot, pilot_pic_title, pilot_faa_uas_cert_num,
     #     pilot_issue_on, pilot_valid_until, pilot_ama_num, drone_model, drone, lat, long,
     #      temp, tempText):
-    def submit_form(self):
+    def submit_form(self, date, temp):
         self.cur = self.con.cursor()
         # query = "INSERT INTO DroneOp.flight_log ("+'date'+","+'pilot'+","+'pilot_pic_title'+","+'pilot_faa_uas_cert_num'+","+
         #     'pilot_issue_on'+","+'pilot_valid_until'+","+ 'pilot_ama_num'+","+ 'drone_model'+","+ 'drone'+","+ 'lat'+","+ 'long'+","+
@@ -97,8 +97,8 @@ class Database:
         # sql = """INSERT INTO DroneOp.test (test, test1) VALUES ("%s", "%s")"""
         # cursor.execute(sql, ('2008-01-01 00:00:50', '29'))
         # self.cur.execute(sql, (5, '29'))
-        insertStatement = "INSERT INTO DroneOp.test (test, test1) VALUES (9,\"test\")"
-        self.cur.execute(insertStatement)
+        statement = "INSERT INTO DroneOp.flight_log (date, temp) VALUES ("+date+",\""+temp+"\")"
+        self.cur.execute(statement)
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
@@ -188,7 +188,8 @@ def weather():
 
 @app.route('/submit')
 def submit():
-    today = datetime.datetime.now()
+    now = datetime.datetime.now()
+    formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
     submit = 1
     temp = request.args.get('data')
     # data = request.args.get('data').split(",")
@@ -199,12 +200,12 @@ def submit():
     # temp = data[8]
     # var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
     # + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +temp + "," + tempText;
-    def db_query():
+    def db_query(formatted_date,temp):
         db = Database()
-        submit = db.submit_form()
+        submit = db.submit_form(formatted_date,temp)
         db.commit()
         return submit
-    db_query()
+    db_query(formatted_date, temp)
     return flask.jsonify({"results": "submit"})
     #curr date
     # //pilot
