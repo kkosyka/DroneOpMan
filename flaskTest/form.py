@@ -5,7 +5,6 @@ from werkzeug import generate_password_hash, check_password_hash
 import pymysql
 from datetime import date
 import datetime
-# from weather import Weather, Unit
 from darksky import forecast
 import time
 
@@ -103,7 +102,7 @@ class Database:
         #INSERT INTO `DroneOp`.`test` (`idtest`, `date`) VALUES ('1', '2000-01-01 00:00:12');
         statement = "INSERT INTO DroneOp.test (date, test) VALUES (%s,%s)"
 
-        self.cur.execute(statement, (now, '435'))
+        self.cur.execute(statement, (now, str(temp)))
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
