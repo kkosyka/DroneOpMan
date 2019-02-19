@@ -7,6 +7,7 @@ from datetime import date
 import datetime
 # from weather import Weather, Unit
 from darksky import forecast
+import time
 
 app = Flask(__name__)
 
@@ -97,13 +98,17 @@ class Database:
         # sql = """INSERT INTO DroneOp.test (test, test1) VALUES ("%s", "%s")"""
         # cursor.execute(sql, ('2008-01-01 00:00:50', '29'))
         # self.cur.execute(sql, (5, '29'))
-        statement = "INSERT INTO DroneOp.flight_log (date, temp) VALUES ("+date+",\""+temp+"\")"
-        self.cur.execute(statement)
+        # now = time.strftime('%Y-%m-%d %H:%M:%S')
+        now = (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
+        #INSERT INTO `DroneOp`.`test` (`idtest`, `date`) VALUES ('1', '2000-01-01 00:00:12');
+        statement = "INSERT INTO DroneOp.test (date, test) VALUES (%s,%s)"
+
+        self.cur.execute(statement, (now, '435'))
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
-        result = "yup"
-        return result
+        # result = "yup"
+        return now
 
 @app.route('/')
 def init():
@@ -203,10 +208,10 @@ def submit():
     def db_query(formatted_date,temp):
         db = Database()
         submit = db.submit_form(formatted_date,temp)
-        db.commit()
+        # db.commit()
         return submit
-    db_query(formatted_date, temp)
-    return flask.jsonify({"results": "submit"})
+    res = db_query(formatted_date, temp)
+    return flask.jsonify({"results": res})
     #curr date
     # //pilot
     # selectedPilot
