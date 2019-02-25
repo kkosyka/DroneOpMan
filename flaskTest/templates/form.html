@@ -24,6 +24,7 @@
              $("#faaUasCertNum").val(response.FaaUasCertNum.toString());
              $("#IssueOn").val(response.IssueOn.toString());
              $("#ValidUntil").val(response.ValidUntil.toString());
+             $("#AmaNum").val(response.AmaNum.toString());
            },
           });
        });
@@ -45,7 +46,6 @@
                   value: response.result[i],
                   text: response.result[i]
               }));
-
             }
             $('.drone_list').append(s);
            },
@@ -100,29 +100,28 @@
       //SUBMIT
       $(document).ready(function(){
         $('.wrapper6').on('click', '.submit_form', function(){
-            var pilot = $("#selectedPilot").val();
-            var FaaUasCertNum = $("#FaaUasCertNum").val();
-           var IssueOn = $("#IssueOn").val();
-           var ValidUntil = $("#ValidUntil").val();
-
-           var AmaNum = $("#AmaNum").val();
-          var selectedModel = $("#selectedModel").val();
-          // var long = $("#currLong").val(); //drone
-
-           var lat = $("#currLat").val();
-           var long = $("#currLong").val();
-           var temp = $("#weatherTemp").val();
-           // var temp = 92.12;
-
-           var tempText = $("#weatherSumm").val();
-           // var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
-           //            + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +
-           //             temp + "," + tempText;
-           var data = temp;
+          var pilot = $(".wrapper1 #selectedPilot").val();
+          var PicTitle = $(".wrapper1 #PicTitle").val();
+          var faa_uas_cert_num = $(".wrapper1 #faaUasCertNum").val();
+          var IssueOn = $(".wrapper1 #IssueOn").val();
+          var ValidUntil = $(".wrapper1 #ValidUntil").val();
+          var AmaNum = $(".wrapper1 #AmaNum").val();
+          var selectedModel = $(".wrapper2 #selectedModel").val();
+          var lat = $(".wrapper5 #currLat").val();
+          var long = $(".wrapper5 #currLong").val();
+          var temp = $(".wrapper5 #weatherTemp").val();
+          var temp_text = $(".wrapper5 #weatherSumm").val();
+          // var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
+          //            + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +
+          //             temp + "," + tempText;
+           // var data = temp;
+           // var data = pilot + "," + PicTitle;
            $.ajax({
             url: "/submit",
             type: "get",
-            data: {data: data},
+            data: {pilot: pilot, pic_title: PicTitle, faa_uas_cert_num:faa_uas_cert_num, issue_on: IssueOn,
+                    valid_until:ValidUntil, ama_num:AmaNum, selected_model: selectedModel, lat:lat, long:long,
+                    temp: temp, temp_text:temp_text},
             success: function(response) {
               $("#submitForm").val(response.results);
              // $("#submit").val(response.results);
@@ -147,12 +146,14 @@
             {% endfor %}
           </select>
           <button class='get_crew_result'>Calculate</button>
+
+          <input type="text" name="PicTitle" id="PicTitle" class="form-control" placeholder="PIC Title" readonly>
+          <input type="text" name="FaaUasCertNum" id="faaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
+          <input type="text" name="IssueOn" id="IssueOn" class="form-control" placeholder="Issued On" readonly>
+          <input type="text" name="ValidUntil" id="ValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
+          <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly>
+
         </div>
-        <input type="text" name="PicTitle" id="PicTitle" class="form-control" placeholder="PIC Title" readonly>
-        <input type="text" name="FaaUasCertNum" id="faaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
-        <input type="text" name="IssueOn" id="IssueOn" class="form-control" placeholder="Issued On" readonly>
-        <input type="text" name="ValidUntil" id="ValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
-        <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly>
 
         <h1>MODEL</h1>
         <!-- // <input type="text" name="inputAircraftMod" id="inputAircraftMod" class="form-control" placeholder="Aircraft Model" readonly>
@@ -253,5 +254,9 @@ currLat
 currLong
 weatherTemp
 weatherSumm
+
+
+
+Error Code: 1427. For float(M,D), double(M,D) or decimal(M,D), M must be >= D (column 'lat').
 
  -->

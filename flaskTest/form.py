@@ -1,6 +1,5 @@
 from flask import Flask, render_template, json, request
 import flask
-# from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 import pymysql
 from datetime import date
@@ -18,7 +17,6 @@ class Database:
         password = 'test'
         db = 'DroneOp'
         port=5000
-
         self.con = pymysql.connect(host=host, user=user, password=password, db=db, autocommit=True, cursorclass=pymysql.cursors.DictCursor)
 
     def list_crew_names(self):
@@ -82,31 +80,18 @@ class Database:
     # def submit_form(self, date,pilot, pilot_pic_title, pilot_faa_uas_cert_num,
     #     pilot_issue_on, pilot_valid_until, pilot_ama_num, drone_model, drone, lat, long,
     #      temp, tempText):
-    def submit_form(self, date, temp):
+    def submit_form(self, pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num, selected_model,lat,long, temp, temp_text):
         self.cur = self.con.cursor()
-        # query = "INSERT INTO DroneOp.flight_log ("+'date'+","+'pilot'+","+'pilot_pic_title'+","+'pilot_faa_uas_cert_num'+","+
-        #     'pilot_issue_on'+","+'pilot_valid_until'+","+ 'pilot_ama_num'+","+ 'drone_model'+","+ 'drone'+","+ 'lat'+","+ 'long'+","+
-        #      'temp'+","+ 'tempText') VALUES
-        #      (+"'"+date+"','"+pilot+"','"+pilot_pic_title+"','"+pilot_faa_uas_cert_num+"','"+
-        #          pilot_issue_on+"','"+pilot_valid_until+"','"+pilot_ama_num+"','"+drone_model+"','"+drone+"','"+lat+"','"+long+"','"+
-        #           temp+"','"+tempText+"'"+")"
-        # query = "INSERT INTO DroneOp.flight_log (date, temp) VALUES ( "+ date + ", " + temp + ")"
-        # query = "INSERT INTO DroneOp.flight_log (date) VALUES ('2008-01-01 00:00:50')";
-        # query =  """INSERT INTO b (source_id,text,author,score,type,location) VALUES ('%s','%s','%s','%s','%s','%s')""" %
-        # query =  """INSERT INTO DroneOp.flight_log (date,temp) VALUES ('%s','%s')""" % ('2008-01-01 00:00:50', '29')
-        # sql = """INSERT INTO DroneOp.test (test, test1) VALUES ("%s", "%s")"""
-        # cursor.execute(sql, ('2008-01-01 00:00:50', '29'))
-        # self.cur.execute(sql, (5, '29'))
-        # now = time.strftime('%Y-%m-%d %H:%M:%S')
         now = (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
-        #INSERT INTO `DroneOp`.`test` (`idtest`, `date`) VALUES ('1', '2000-01-01 00:00:12');
-        statement = "INSERT INTO DroneOp.test (date, test) VALUES (%s,%s)"
-
-        self.cur.execute(statement, (now, str(temp)))
+        print(long)
+        print(type(long))
+        print(temp_text)
+        #figure out long - neg decimal??
+        statement = "INSERT INTO DroneOp.logs (datetime, pilot, pic_title, faa_uas_cert_num,issue_on, valid_until, ama_num,selected_model,lat,temp,temp_text) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        self.cur.execute(statement, (now, pilot,pic_title,faa_uas_cert_num,issue_on, valid_until, ama_num,selected_model,lat, temp, temp_text))
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
-        # result = "yup"
         return now
 
 @app.route('/')
@@ -192,24 +177,25 @@ def weather():
 
 @app.route('/submit')
 def submit():
-    now = datetime.datetime.now()
-    formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-    submit = 1
-    temp = request.args.get('data')
-    # data = request.args.get('data').split(",")
-    # pilot =data[0]
-    # FaaUasCertNum = data[1]
-    # IssueOn = data[2]
-    # ValidUntil = data[3]
-    # temp = data[8]
-    # var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
-    # + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +temp + "," + tempText;
-    def db_query(formatted_date,temp):
+    pilot = request.args.get('pilot')
+    pic_title = request.args.get('pic_title')
+    faa_uas_cert_num= request.args.get('faa_uas_cert_num')
+    issue_on= request.args.get('issue_on')
+    valid_until= request.args.get('valid_until')
+    ama_num= request.args.get('ama_num')
+    selected_model= request.args.get('selected_model')
+    lat= request.args.get('lat')
+    long= request.args.get('long')
+    temp= request.args.get('temp')
+    temp_text= request.args.get('temp_text')
+
+    def db_query(pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num, selected_model,lat,long, temp, temp_text):
         db = Database()
-        submit = db.submit_form(formatted_date,temp)
+        submit = db.submit_form(pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num, selected_model,lat,long, temp, temp_text)
         # db.commit()
         return submit
-    res = db_query(formatted_date, temp)
+    long= request.args.get('long')
+    res = db_query(pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num, selected_model,lat,long, temp, temp_text)
     return flask.jsonify({"results": res})
     #curr date
     # //pilot
@@ -305,5 +291,38 @@ INSERT INTO `DroneOp`.`flight_log` (`date`, `pilot`, `pilot_pic_title`, `pilot_f
      ('01-01-01', 'fgdh', 'fgh', 'dgfhdfgh', 'gfh', 'ssfg', 'rewgrg',
      'wreg', 'gwre', '456', '53', '34', 'dgfh');
 
+
+
+
+CREATE TABLE `DroneOp`.`new_table` (
+  `datetime` DATETIME NOT NULL,
+  `pilot` VARCHAR(45) NULL,
+  `faa_uas_cert_num` VARCHAR(45) NULL,
+  `temp` FLOAT NULL,
+  `tempSum` VARCHAR(45) NULL,
+  `lat` FLOAT NULL,
+  PRIMARY KEY (`datetime`));
+
+
+CREATE TABLE `DroneOp`.`logs` (
+  `datetime` DATETIME NOT NULL,
+  `pilot` VARCHAR(45) NULL,
+  `pic_title` VARCHAR(45) NULL,
+  `faa_uas_cert_num` VARCHAR(45) NULL,
+  `issue_on` VARCHAR(45) NULL,
+  `valid_until` VARCHAR(45) NULL,
+  `ama_num` VARCHAR(45) NULL,
+  `selected_model` VARCHAR(45) NULL,
+  `lat` DECIMAL(10,6) NULL,
+  `long` DECIMAL(10,6) NULL,
+  `temp` DECIMAL(10,6) NULL,
+  `temp_text` VARCHAR(45) NULL,
+  PRIMARY KEY (`datetime`));
+
+
+
+
+
+pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num, selected_model,lat,long, temp, temp_text)
 
 """
