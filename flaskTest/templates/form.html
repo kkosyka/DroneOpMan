@@ -13,22 +13,61 @@
   <script>
     //CREW
      $(document).ready(function(){
-       $('.wrapper1').on('click', '.get_crew_result', function(){
-          var selectedPilot = $("#selectedPilot").val();
+       $('.camera_op').on('click', '.get_crew_result', function(){
+          var selectedPilot = $("#selectedcamera_op").val();
           $.ajax({
            url: "/update_pilot_info",
            type: "get",
            data: {selectedPilot: selectedPilot},
            success: function(response) {
-             $("#PicTitle").val(response.PicTitle.toString());
-             $("#faaUasCertNum").val(response.FaaUasCertNum.toString());
-             $("#IssueOn").val(response.IssueOn.toString());
-             $("#ValidUntil").val(response.ValidUntil.toString());
-             $("#AmaNum").val(response.AmaNum.toString());
+             $("#camera_opPicTitle").val(response.PicTitle.toString());
+             $("#camera_opfaaUasCertNum").val(response.FaaUasCertNum.toString());
+             $("#camera_opIssueOn").val(response.IssueOn.toString());
+             $("#camera_opValidUntil").val(response.ValidUntil.toString());
+             $("#camera_opAmaNum").val(response.AmaNum.toString());
            },
           });
        });
      });
+
+     $(document).ready(function(){
+       $('.drone_op').on('click', '.get_crew_result', function(){
+          var selectedPilot = $("#selecteddrone_op").val();
+          $.ajax({
+           url: "/update_pilot_info",
+           type: "get",
+           data: {selectedPilot: selectedPilot},
+           success: function(response) {
+             $("#drone_opPicTitle").val(response.PicTitle.toString());
+             $("#drone_opfaaUasCertNum").val(response.FaaUasCertNum.toString());
+             $("#drone_opIssueOn").val(response.IssueOn.toString());
+             $("#drone_opValidUntil").val(response.ValidUntil.toString());
+             $("#drone_opAmaNum").val(response.AmaNum.toString());
+           },
+          });
+       });
+     });
+
+     $(document).ready(function(){
+       $('.vis_obs').on('click', '.get_crew_result', function(){
+          var selectedPilot = $("#selectedvis_obs").val();
+          $.ajax({
+           url: "/update_pilot_info",
+           type: "get",
+           data: {selectedPilot: selectedPilot},
+           success: function(response) {
+             $("#vis_obsPicTitle").val(response.PicTitle.toString());
+             $("#vis_obsfaaUasCertNum").val(response.FaaUasCertNum.toString());
+             $("#vis_obsIssueOn").val(response.IssueOn.toString());
+             $("#vis_obsValidUntil").val(response.ValidUntil.toString());
+             $("#vis_obsAmaNum").val(response.AmaNum.toString());
+           },
+          });
+       });
+     });
+
+
+
 
     //MODEL
      $(document).ready(function(){
@@ -100,12 +139,27 @@
       //SUBMIT
       $(document).ready(function(){
         $('.wrapper6').on('click', '.submit_form', function(){
-          var pilot = $(".wrapper1 #selectedPilot").val();
-          var PicTitle = $(".wrapper1 #PicTitle").val();
-          var faa_uas_cert_num = $(".wrapper1 #faaUasCertNum").val();
-          var IssueOn = $(".wrapper1 #IssueOn").val();
-          var ValidUntil = $(".wrapper1 #ValidUntil").val();
-          var AmaNum = $(".wrapper1 #AmaNum").val();
+          var camera_oppilot = $(".camera_op #camera_opselectedPilot").val();
+          var camera_opPicTitle = $(".camera_op #camera_opPicTitle").val();
+          var camera_opfaa_uas_cert_num = $(".camera_op #camera_opfaaUasCertNum").val();
+          var camera_opIssueOn = $(".camera_op #camera_opIssueOn").val();
+          var camera_opValidUntil = $(".camera_op #camera_opValidUntil").val();
+          var camera_opAmaNum = $(".camera_op #camera_opAmaNum").val();
+
+          var drone_oppilot = $(".drone_op #selectedPilot").val();
+          var drone_opPicTitle = $(".drone_op #PicTitle").val();
+          var drone_opfaa_uas_cert_num = $(".drone_op #faaUasCertNum").val();
+          var drone_oppIssueOn = $(".drone_op #IssueOn").val();
+          var drone_opValidUntil = $(".drone_op #ValidUntil").val();
+          var drone_opAmaNum = $(".drone_op #AmaNum").val();
+
+          var vis_obspilot = $(".vis_obs #selectedPilot").val();
+          var vis_obsPicTitle = $(".vis_obs #PicTitle").val();
+          var vis_obsfaa_uas_cert_num = $(".vis_obs #faaUasCertNum").val();
+          var vis_obsIssueOn = $(".vis_obs #IssueOn").val();
+          var vis_obsValidUntil = $(".vis_obs #ValidUntil").val();
+          var vis_obsAmaNum = $(".vis_obs #AmaNum").val();
+
           var selectedModel = $(".wrapper2 #selectedModel").val();
           var lat = $(".wrapper5 #currLat").val();
           var long = $(".wrapper5 #currLong").val();
@@ -119,9 +173,16 @@
            $.ajax({
             url: "/submit",
             type: "get",
-            data: {pilot: pilot, pic_title: PicTitle, faa_uas_cert_num:faa_uas_cert_num, issue_on: IssueOn,
-                    valid_until:ValidUntil, ama_num:AmaNum, selected_model: selectedModel, lat:lat, long:long,
-                    temp: temp, temp_text:temp_text},
+            data: {camera_oppilot: camera_oppilot, camera_oppic_title: camera_opPicTitle, camera_opfaa_uas_cert_num:camera_opfaa_uas_cert_num, camera_opissue_on: camera_opIssueOn,
+                    camera_opvalid_until:camera_opValidUntil, camera_opama_num:camera_opAmaNum,
+
+                    drone_oppilot: drone_oppilot, drone_oppic_title: drone_opPicTitle, drone_opfaa_uas_cert_num:drone_opfaa_uas_cert_num, drone_opissue_on: drone_opIssueOn,
+                            drone_opvalid_until:drone_opValidUntil, drone_opama_num:drone_opAmaNum,
+
+                    vis_obspilot: vis_obspilot, vis_obspic_title: vis_obsPicTitle, vis_obsfaa_uas_cert_num:vis_obsfaa_uas_cert_num, vis_obsissue_on: vis_obsIssueOn,
+                            vis_obsvalid_until:vis_obsValidUntil, vis_obsama_num:vis_obsAmaNum,
+
+                    selected_model: selectedModel, lat:lat, long:long,temp: temp, temp_text:temp_text},
             success: function(response) {
               $("#submitForm").val(response.results);
              // $("#submit").val(response.results);
@@ -136,24 +197,61 @@
       <h1>Drone Operation Manual</h1>
 
       <div class="jumbotron">
-        <h1>PILOT</h1>
-
-        <div class='wrapper1'>
-          <select id="inputPilot" name="res" method="GET" action="/">
+        <h1>TEAM</h1>
+        <!-- team (3 ppl)
+          camera operator
+          drone operator
+          visual observer -->
+        <h2>Camera Operator</h2>
+        <div class='camera_op'>
+          <select id="inputcamera_op" name="res" method="GET" action="/">
             <option value="{{crewRes[0]}}" selected>{{crewRes[0]}}</option>
             {% for r in crewRes[1:] %}
-              <option id="selectedPilot" name="selectedPilot" value="{{r.pilot}}">{{r.pilot}}</option>
+              <option id="selectedcamera_op" name="selectedcamera_op" value="{{r.pilot}}">{{r.pilot}}</option>
             {% endfor %}
           </select>
           <button class='get_crew_result'>Calculate</button>
 
-          <input type="text" name="PicTitle" id="PicTitle" class="form-control" placeholder="PIC Title" readonly>
-          <input type="text" name="FaaUasCertNum" id="faaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
-          <input type="text" name="IssueOn" id="IssueOn" class="form-control" placeholder="Issued On" readonly>
-          <input type="text" name="ValidUntil" id="ValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
-          <input type="text" name="AmaNum" id="AmaNum" class="form-control" placeholder="AMA Num" readonly>
-
+          <input type="text" name="camera_opPicTitle" id="camera_opPicTitle" class="form-control" placeholder="PIC Title" readonly>
+          <input type="text" name="camera_opFaaUasCertNum" id="camera_opfaaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
+          <input type="text" name="camera_opIssueOn" id="camera_opIssueOn" class="form-control" placeholder="Issued On" readonly>
+          <input type="text" name="camera_opValidUntil" id="camera_opValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
+          <input type="text" name="camera_opAmaNum" id="camera_opAmaNum" class="form-control" placeholder="AMA Num" readonly>
         </div>
+        <h2>Drone Operator</h2>
+        <div class='drone_op'>
+          <select id="inputdrone_op" name="res" method="GET" action="/">
+            <option value="{{crewRes[0]}}" selected>{{crewRes[0]}}</option>
+            {% for r in crewRes[1:] %}
+              <option id="selecteddrone_op" name="selecteddrone_op" value="{{r.pilot}}">{{r.pilot}}</option>
+            {% endfor %}
+          </select>
+          <button class='get_crew_result'>Calculate</button>
+          <input type="text" name="drone_opPicTitle" id="drone_opPicTitle" class="form-control" placeholder="PIC Title" readonly>
+          <input type="text" name="drone_opFaaUasCertNum" id="drone_opfaaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
+          <input type="text" name="drone_opIssueOn" id="drone_opIssueOn" class="form-control" placeholder="Issued On" readonly>
+          <input type="text" name="drone_opValidUntil" id="drone_opValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
+          <input type="text" name="drone_opAmaNum" id="drone_opAmaNum" class="form-control" placeholder="AMA Num" readonly>
+        </div>
+
+        <h2>Visual Observer</h2>
+        <div class='vis_obs'>
+          <select id="inputvis_obs" name="res" method="GET" action="/">
+            <option value="{{crewRes[0]}}" selected>{{crewRes[0]}}</option>
+            {% for r in crewRes[1:] %}
+              <option id="selectedvis_obs" name="selectedvis_obs" value="{{r.pilot}}">{{r.pilot}}</option>
+            {% endfor %}
+          </select>
+          <button class='get_crew_result'>Calculate</button>
+
+          <input type="text" name="vis_obsPicTitle" id="vis_obsPicTitle" class="form-control" placeholder="PIC Title" readonly>
+          <input type="text" name="vis_obsFaaUasCertNum" id="vis_obsfaaUasCertNum" class="form-control" placeholder="FAA UAS Cert Num" readonly>
+          <input type="text" name="vis_obsIssueOn" id="vis_obsIssueOn" class="form-control" placeholder="Issued On" readonly>
+          <input type="text" name="vis_obsValidUntil" id="vis_obsValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
+          <input type="text" name="vis_obsAmaNum" id="vis_obsAmaNum" class="form-control" placeholder="AMA Num" readonly>
+        </div>
+
+
 
         <h1>MODEL</h1>
         <!-- // <input type="text" name="inputAircraftMod" id="inputAircraftMod" class="form-control" placeholder="Aircraft Model" readonly>
@@ -200,10 +298,7 @@
       </div>
 
       <!-- mission - text field -->
-      <!-- team (3 ppl)
-        camera operator
-        drone operator
-        visual observer -->
+
   </body>
 
   <script type="text/javascript">
