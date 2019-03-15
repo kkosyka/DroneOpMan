@@ -80,17 +80,22 @@ class Database:
     # def submit_form(self, date,pilot, pilot_pic_title, pilot_faa_uas_cert_num,
     #     pilot_issue_on, pilot_valid_until, pilot_ama_num, drone_model, drone, lat, long,
     #      temp, tempText):
-    def submit_form(self,camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,selected_model,lat,long, temp, temp_text):
+    def submit_form(self,camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
+            drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
+
+            selected_model,lat,long, temp, temp_text):
+        #submit_form(self,camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,selected_model,lat,long, temp, temp_text):
+
         self.cur = self.con.cursor()
         now = (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
         print(long)
         print(type(long))
         print(temp_text)
         #figure out long - neg decimal??
-        statement = "INSERT INTO DroneOp.logs2 (datetime, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num, drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num, vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num, selected_model,lat,temp,temp_text) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        statement = "INSERT INTO DroneOp.logs2 (datetime, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,selected_model,lat,long, temp, temp_text) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         self.cur.execute(statement, (now, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
                             drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-                            vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num,
+
                             selected_model,lat, temp, temp_text))
         result = self.cur.fetchall()
         self.cur.close
@@ -176,6 +181,7 @@ def weather():
     lat = latlng.split(",")[0]
     long = latlng.split(",")[1]
     currLocation = forecast(key, lat, long)
+    #TODO -- get all darksky info
     return flask.jsonify({"temp": currLocation.temperature, "text": currLocation.summary})
 
 @app.route('/submit')
@@ -194,12 +200,12 @@ def submit():
     drone_opissue_on= request.args.get('drone_opissue_on')
     drone_opvalid_until= request.args.get('drone_opvalid_until')
     drone_opama_num= request.args.get('drone_opama_num')
-    vis_obspilot = request.args.get('vis_obspilot')
-    vis_obspic_title = request.args.get('vis_obspic_title')
-    vis_obsfaa_uas_cert_num= request.args.get('vis_obsfaa_uas_cert_num')
-    vis_obsissue_on= request.args.get('vis_obsissue_on')
-    vis_obsvalid_until= request.args.get('vis_obsvalid_until')
-    vis_obsama_num= request.args.get('vis_obsama_num')
+    # vis_obspilot = request.args.get('vis_obspilot')
+    # vis_obspic_title = request.args.get('vis_obspic_title')
+    # vis_obsfaa_uas_cert_num= request.args.get('vis_obsfaa_uas_cert_num')
+    # vis_obsissue_on= request.args.get('vis_obsissue_on')
+    # vis_obsvalid_until= request.args.get('vis_obsvalid_until')
+    # vis_obsama_num= request.args.get('vis_obsama_num')
     selected_model= request.args.get('selected_model')
     lat= request.args.get('lat')
     long= request.args.get('long')
@@ -210,19 +216,20 @@ def submit():
 # pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num
     def db_query(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
             drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-            vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num,
+
             selected_model,lat,long, temp, temp_text):
+            # (camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
+            #         drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
+            #         vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num,
+            #         selected_model,lat,long, temp, temp_text):
         db = Database()
         submit = db.submit_form(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
         drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-        vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num,
         selected_model,lat,long, temp, temp_text)
         # db.commit()
         return submit
-    long= request.args.get('long')
     res = db_query(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
         drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-        vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num,
         selected_model,lat,long, temp, temp_text)
     return flask.jsonify({"results": res})
     #curr date

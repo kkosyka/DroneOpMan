@@ -12,6 +12,7 @@
 
   <script>
     //CREW
+    //camera operator
      $(document).ready(function(){
        $('.camera_op').on('click', '.get_crew_result', function(){
           var selectedPilot = $("#selectedcamera_op").val();
@@ -29,7 +30,7 @@
           });
        });
      });
-
+     //drone operator
      $(document).ready(function(){
        $('.drone_op').on('click', '.get_crew_result', function(){
           var selectedPilot = $("#selecteddrone_op").val();
@@ -47,27 +48,24 @@
           });
        });
      });
-
-     $(document).ready(function(){
-       $('.vis_obs').on('click', '.get_crew_result', function(){
-          var selectedPilot = $("#selectedvis_obs").val();
-          $.ajax({
-           url: "/update_pilot_info",
-           type: "get",
-           data: {selectedPilot: selectedPilot},
-           success: function(response) {
-             $("#vis_obsPicTitle").val(response.PicTitle.toString());
-             $("#vis_obsfaaUasCertNum").val(response.FaaUasCertNum.toString());
-             $("#vis_obsIssueOn").val(response.IssueOn.toString());
-             $("#vis_obsValidUntil").val(response.ValidUntil.toString());
-             $("#vis_obsAmaNum").val(response.AmaNum.toString());
-           },
-          });
-       });
-     });
-
-
-
+     //visual observer
+     // $(document).ready(function(){
+     //   $('.vis_obs').on('click', '.get_crew_result', function(){
+     //      var selectedPilot = $("#selectedvis_obs").val();
+     //      $.ajax({
+     //       url: "/update_pilot_info",
+     //       type: "get",
+     //       data: {selectedPilot: selectedPilot},
+     //       success: function(response) {
+     //         $("#vis_obsPicTitle").val(response.PicTitle.toString());
+     //         $("#vis_obsfaaUasCertNum").val(response.FaaUasCertNum.toString());
+     //         $("#vis_obsIssueOn").val(response.IssueOn.toString());
+     //         $("#vis_obsValidUntil").val(response.ValidUntil.toString());
+     //         $("#vis_obsAmaNum").val(response.AmaNum.toString());
+     //       },
+     //      });
+     //   });
+     // });
 
     //MODEL
      $(document).ready(function(){
@@ -146,43 +144,37 @@
           var camera_opValidUntil = $(".camera_op #camera_opValidUntil").val();
           var camera_opAmaNum = $(".camera_op #camera_opAmaNum").val();
 
-          var drone_oppilot = $(".drone_op #selectedPilot").val();
-          var drone_opPicTitle = $(".drone_op #PicTitle").val();
-          var drone_opfaa_uas_cert_num = $(".drone_op #faaUasCertNum").val();
-          var drone_oppIssueOn = $(".drone_op #IssueOn").val();
-          var drone_opValidUntil = $(".drone_op #ValidUntil").val();
-          var drone_opAmaNum = $(".drone_op #AmaNum").val();
+          // var drone_oppilot = $(".drone_op #selecteddrone_op").val();
+          // var drone_opPicTitle = $(".drone_op #drone_opPicTitle").val();
+          // var drone_opfaa_uas_cert_num = $(".drone_op #drone_opfaaUasCertNum").val();
+          // var drone_oppIssueOn = $(".drone_op #drone_opIssueOn").val();
+          // var drone_opValidUntil = $(".drone_op #drone_opValidUntil").val();
+          // var drone_opAmaNum = $(".drone_op #drone_opAmaNum").val();
 
-          var vis_obspilot = $(".vis_obs #selectedPilot").val();
-          var vis_obsPicTitle = $(".vis_obs #PicTitle").val();
-          var vis_obsfaa_uas_cert_num = $(".vis_obs #faaUasCertNum").val();
-          var vis_obsIssueOn = $(".vis_obs #IssueOn").val();
-          var vis_obsValidUntil = $(".vis_obs #ValidUntil").val();
-          var vis_obsAmaNum = $(".vis_obs #AmaNum").val();
+          // var vis_obspilot = $(".vis_obs #selectedPilot").val();
+          // var vis_obsPicTitle = $(".vis_obs #PicTitle").val();
+          // var vis_obsfaa_uas_cert_num = $(".vis_obs #faaUasCertNum").val();
+          // var vis_obsIssueOn = $(".vis_obs #IssueOn").val();
+          // var vis_obsValidUntil = $(".vis_obs #ValidUntil").val();
+          // var vis_obsAmaNum = $(".vis_obs #AmaNum").val();
 
           var selectedModel = $(".wrapper2 #selectedModel").val();
           var lat = $(".wrapper5 #currLat").val();
           var long = $(".wrapper5 #currLong").val();
           var temp = $(".wrapper5 #weatherTemp").val();
           var temp_text = $(".wrapper5 #weatherSumm").val();
-          // var data = pilot + "," + FaaUasCertNum + "," + IssueOn + "," + ValidUntil + ","
-          //            + AmaNum + "," + selectedModel + "," + lat + "," + long + "," +
-          //             temp + "," + tempText;
-           // var data = temp;
-           // var data = pilot + "," + PicTitle;
+
            $.ajax({
             url: "/submit",
             type: "get",
-            data: {camera_oppilot: camera_oppilot, camera_oppic_title: camera_opPicTitle, camera_opfaa_uas_cert_num:camera_opfaa_uas_cert_num, camera_opissue_on: camera_opIssueOn,
-                    camera_opvalid_until:camera_opValidUntil, camera_opama_num:camera_opAmaNum,
+            data: {camera_oppilot: camera_oppilot, camera_oppic_title: camera_opPicTitle, camera_opfaa_uas_cert_num:camera_opfaa_uas_cert_num, camera_opissue_on: camera_opIssueOn, camera_opvalid_until:camera_opValidUntil, camera_opama_num:camera_opAmaNum,selected_model: selectedModel, lat:lat, long:long,temp: temp, temp_text:temp_text},
+                    // drone_oppilot: drone_oppilot, drone_oppic_title: drone_opPicTitle, drone_opfaa_uas_cert_num:drone_opfaa_uas_cert_num, drone_opissue_on: drone_opIssueOn,
+                    //         drone_opvalid_until:drone_opValidUntil, drone_opama_num:drone_opAmaNum,
 
-                    drone_oppilot: drone_oppilot, drone_oppic_title: drone_opPicTitle, drone_opfaa_uas_cert_num:drone_opfaa_uas_cert_num, drone_opissue_on: drone_opIssueOn,
-                            drone_opvalid_until:drone_opValidUntil, drone_opama_num:drone_opAmaNum,
+                    // vis_obspilot: vis_obspilot, vis_obspic_title: vis_obsPicTitle, vis_obsfaa_uas_cert_num:vis_obsfaa_uas_cert_num, vis_obsissue_on: vis_obsIssueOn,
+                    //         vis_obsvalid_until:vis_obsValidUntil, vis_obsama_num:vis_obsAmaNum,
 
-                    vis_obspilot: vis_obspilot, vis_obspic_title: vis_obsPicTitle, vis_obsfaa_uas_cert_num:vis_obsfaa_uas_cert_num, vis_obsissue_on: vis_obsIssueOn,
-                            vis_obsvalid_until:vis_obsValidUntil, vis_obsama_num:vis_obsAmaNum,
 
-                    selected_model: selectedModel, lat:lat, long:long,temp: temp, temp_text:temp_text},
             success: function(response) {
               $("#submitForm").val(response.results);
              // $("#submit").val(response.results);
@@ -233,7 +225,7 @@
           <input type="text" name="drone_opValidUntil" id="drone_opValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
           <input type="text" name="drone_opAmaNum" id="drone_opAmaNum" class="form-control" placeholder="AMA Num" readonly>
         </div>
-
+<!--
         <h2>Visual Observer</h2>
         <div class='vis_obs'>
           <select id="inputvis_obs" name="res" method="GET" action="/">
@@ -249,7 +241,7 @@
           <input type="text" name="vis_obsIssueOn" id="vis_obsIssueOn" class="form-control" placeholder="Issued On" readonly>
           <input type="text" name="vis_obsValidUntil" id="vis_obsValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
           <input type="text" name="vis_obsAmaNum" id="vis_obsAmaNum" class="form-control" placeholder="AMA Num" readonly>
-        </div>
+        </div> -->
 
 
 
@@ -293,7 +285,7 @@
 
         <div class='wrapper6'>
           <button id="submit_form" class='submit_form' type="button">Submit Form</button>
-          <input type="text" name="submitForm" id="submitForm" placeholder="!!" readonly>
+          <input type="text" name="submitForm" id="submitForm" placeholder="!" readonly>
         </div>
       </div>
 
