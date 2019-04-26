@@ -92,11 +92,14 @@ class Database:
         self.cur = self.con.cursor()
         now = (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
         #figure out long - neg decimal??
+        print(camera_oppilot)
+        print(camera_oppic_title)
+        print(camera_opfaa_uas_cert_num)
         statement = "INSERT INTO DroneOp.log (date, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,drone_oppilot, selected_model,lat,long, temp, temp_text, mission) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         self.cur.execute(statement, (now, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
                 drone_oppilot,
 
-                selected_model,lat,long, temp, temp_text, mission))
+                selected_model,str(lat),str(long), str(temp), temp_text, mission))
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
@@ -184,6 +187,7 @@ def weather():
 
 @app.route('/submit')
 def submit():
+
     camera_oppilot = request.args.get('camera_oppilot')
     camera_oppic_title = request.args.get('camera_oppic_title')
     camera_opfaa_uas_cert_num= request.args.get('camera_opfaa_uas_cert_num')

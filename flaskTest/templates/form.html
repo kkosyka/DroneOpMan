@@ -15,7 +15,7 @@
     //camera operator
      $(document).ready(function(){
        $('.camera_op').on('click', '.get_crew_result', function(){
-          var selectedPilot = $("#selectedcamera_op").val();
+          var selectedPilot = $("#camera_opselectedPilot").val();
           $.ajax({
            url: "/update_pilot_info",
            type: "get",
@@ -33,7 +33,7 @@
      //drone operator
      $(document).ready(function(){
        $('.drone_op').on('click', '.get_crew_result', function(){
-          var selectedPilot = $("#selecteddrone_op").val();
+          var selectedPilot = $("#drone_opselectedPilot").val();
           $.ajax({
            url: "/update_pilot_info",
            type: "get",
@@ -133,8 +133,7 @@
            });
         });
       });
-
-      //SUBMIT
+    },
       $(document).ready(function(){
         $('.wrapper6').on('click', '.submit_form', function(){
           var camera_oppilot = $(".camera_op #camera_opselectedPilot").val();
@@ -144,7 +143,7 @@
           var camera_opValidUntil = $(".camera_op #camera_opValidUntil").val();
           var camera_opAmaNum = $(".camera_op #camera_opAmaNum").val();
 
-          var drone_oppilot = $(".drone_op #selecteddrone_op").val();
+          var drone_oppilot = $(".drone_op #drone_opselectedPilot").val();
           // var drone_opPicTitle = $(".drone_op #drone_opPicTitle").val();
           // var drone_opfaa_uas_cert_num = $(".drone_op #drone_opfaaUasCertNum").val();
           // var drone_oppIssueOn = $(".drone_op #drone_opIssueOn").val();
@@ -205,7 +204,7 @@
           <select id="inputcamera_op" name="res" method="GET" action="/">
             <option value="{{crewRes[0]}}" selected>{{crewRes[0]}}</option>
             {% for r in crewRes[1:] %}
-              <option id="selectedcamera_op" name="selectedcamera_op" value="{{r.pilot}}">{{r.pilot}}</option>
+              <option id="camera_opselectedPilot" name="camera_opselectedPilot" value="{{r.pilot}}">{{r.pilot}}</option>
             {% endfor %}
           </select>
           <button class='get_crew_result'>Calculate</button>
@@ -222,7 +221,7 @@
           <select id="inputdrone_op" name="res" method="GET" action="/">
             <option value="{{crewRes[0]}}" selected>{{crewRes[0]}}</option>
             {% for r in crewRes[1:] %}
-              <option id="selecteddrone_op" name="selecteddrone_op" value="{{r.pilot}}">{{r.pilot}}</option>
+              <option id="drone_opselectedPilot" name="drone_opselectedPilot" value="{{r.pilot}}">{{r.pilot}}</option>
             {% endfor %}
           </select>
           <button class='get_crew_result'>Calculate</button>
