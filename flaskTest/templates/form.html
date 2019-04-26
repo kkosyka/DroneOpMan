@@ -144,7 +144,7 @@
           var camera_opValidUntil = $(".camera_op #camera_opValidUntil").val();
           var camera_opAmaNum = $(".camera_op #camera_opAmaNum").val();
 
-          // var drone_oppilot = $(".drone_op #selecteddrone_op").val();
+          var drone_oppilot = $(".drone_op #selecteddrone_op").val();
           // var drone_opPicTitle = $(".drone_op #drone_opPicTitle").val();
           // var drone_opfaa_uas_cert_num = $(".drone_op #drone_opfaaUasCertNum").val();
           // var drone_oppIssueOn = $(".drone_op #drone_opIssueOn").val();
@@ -163,13 +163,19 @@
           var long = $(".wrapper5 #currLong").val();
           var temp = $(".wrapper5 #weatherTemp").val();
           var temp_text = $(".wrapper5 #weatherSumm").val();
+          var mission = $(".wrapper7 #mission").val();
 
            $.ajax({
             url: "/submit",
             type: "get",
-            data: {camera_oppilot: camera_oppilot, camera_oppic_title: camera_opPicTitle, camera_opfaa_uas_cert_num:camera_opfaa_uas_cert_num, camera_opissue_on: camera_opIssueOn, camera_opvalid_until:camera_opValidUntil, camera_opama_num:camera_opAmaNum,selected_model: selectedModel, lat:lat, long:long,temp: temp, temp_text:temp_text},
+            data: {camera_oppilot:camera_oppilot, camera_opPicTitle:camera_opPicTitle, camera_opfaa_uas_cert_num:camera_opfaa_uas_cert_num, camera_opIssueOn:camera_opIssueOn, camera_opValidUntil:camera_opValidUntil, camera_opAmaNum:camera_opAmaNum,
+              drone_oppilot:drone_oppilot,
+              selectedModel:selectedModel, lat:lat, long:long, temp:temp, temp_text:temp_text, mission:mission
+
+            },
+            // data: {camera_oppilot: camera_oppilot, camera_oppic_title: camera_opPicTitle, camera_opfaa_uas_cert_num:camera_opfaa_uas_cert_num, camera_opissue_on: camera_opIssueOn, camera_opvalid_until:camera_opValidUntil, camera_opama_num:camera_opAmaNum,selected_model: selectedModel, lat:lat, long:long,temp: temp, temp_text:temp_text},
                     // drone_oppilot: drone_oppilot, drone_oppic_title: drone_opPicTitle, drone_opfaa_uas_cert_num:drone_opfaa_uas_cert_num, drone_opissue_on: drone_opIssueOn,
-                    //         drone_opvalid_until:drone_opValidUntil, drone_opama_num:drone_opAmaNum,
+                    //         drone_opvalid_until:drone_opValidUntil, drone_opama_num:drone_opAmaNum},
 
                     // vis_obspilot: vis_obspilot, vis_obspic_title: vis_obsPicTitle, vis_obsfaa_uas_cert_num:vis_obsfaa_uas_cert_num, vis_obsissue_on: vis_obsIssueOn,
                     //         vis_obsvalid_until:vis_obsValidUntil, vis_obsama_num:vis_obsAmaNum,
@@ -210,6 +216,7 @@
           <input type="text" name="camera_opValidUntil" id="camera_opValidUntil" class="form-control" placeholder="Valid Unitl" readonly>
           <input type="text" name="camera_opAmaNum" id="camera_opAmaNum" class="form-control" placeholder="AMA Num" readonly>
         </div>
+
         <h2>Drone Operator</h2>
         <div class='drone_op'>
           <select id="inputdrone_op" name="res" method="GET" action="/">
@@ -272,7 +279,6 @@
 
         <h1>DRONE</h1>
 
-
         <div class='wrapper5'>
           <h1>LOCATION</h1>
           <div style="height:500px;" id="map"></div>
@@ -283,13 +289,19 @@
           <input type="text" name="weatherSumm" id="weatherSumm" class="form-control" placeholder="weatherSumm" readonly>
         </div>
 
+        <!-- mission - text field -->
+        <div class='wrapper7'>
+          <h1>MISSION</h1>
+          <textarea id="mission" rows="5" cols="100"></textarea>
+        </div>
+
         <div class='wrapper6'>
           <button id="submit_form" class='submit_form' type="button">Submit Form</button>
           <input type="text" name="submitForm" id="submitForm" placeholder="!" readonly>
         </div>
       </div>
 
-      <!-- mission - text field -->
+
 
   </body>
 
@@ -322,9 +334,8 @@
 
 
 <!-- TODO:
-- when changing selection in drop down, not grabbing the correct ID... seems to get only the first in the list
-- did pilot info & make/drones, need to do specific drone model info
-- weather stuff w map
+- when changing selection in drop down, not grabbing the correct ID... seems to get only the first in the list (need for ppl, make/drones)
+- weather stuff w map(all API stuff)
 - convert results and append to csv
 - append entry to db
   - make a db for entries

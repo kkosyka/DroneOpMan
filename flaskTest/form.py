@@ -80,23 +80,23 @@ class Database:
     # def submit_form(self, date,pilot, pilot_pic_title, pilot_faa_uas_cert_num,
     #     pilot_issue_on, pilot_valid_until, pilot_ama_num, drone_model, drone, lat, long,
     #      temp, tempText):
-    def submit_form(self,camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
-            drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
 
-            selected_model,lat,long, temp, temp_text):
+    #INSERT INTO `DroneOp`.`log` (`date`, `camera_oppilot`, `camera_opfaa_uas_cert_num`, `camera_opissue_on`, `camera_opvalid_until`, `camera_opama_num`, `drone_oppilot`, `selected_model`, `lat`, `long`, `temp`, `tempText`) VALUES ('12/12/12', 'te', 'b', 'mn', 'm', 'm', 'v', 'b', 'b', 'b', 'b', 'b');
+
+    def submit_form(self,camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
+            drone_oppilot,
+
+            selected_model,lat,long, temp, temp_text, mission):
         #submit_form(self,camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,selected_model,lat,long, temp, temp_text):
 
         self.cur = self.con.cursor()
         now = (datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
-        print(long)
-        print(type(long))
-        print(temp_text)
         #figure out long - neg decimal??
-        statement = "INSERT INTO DroneOp.logs2 (datetime, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,selected_model,lat,long, temp, temp_text) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        statement = "INSERT INTO DroneOp.log (date, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,drone_oppilot, selected_model,lat,long, temp, temp_text, mission) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         self.cur.execute(statement, (now, camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
-                            drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
+                drone_oppilot,
 
-                            selected_model,lat, temp, temp_text))
+                selected_model,lat,long, temp, temp_text, mission))
         result = self.cur.fetchall()
         self.cur.close
         self.con.close
@@ -171,8 +171,6 @@ def update_drone_info():
     # list = str(res['drones']).split(",")
     # list = 'test'
     return flask.jsonify({"result":selectedDrone})
-#
-
 
 @app.route('/get_weather')
 def weather():
@@ -186,8 +184,6 @@ def weather():
 
 @app.route('/submit')
 def submit():
-
-
     camera_oppilot = request.args.get('camera_oppilot')
     camera_oppic_title = request.args.get('camera_oppic_title')
     camera_opfaa_uas_cert_num= request.args.get('camera_opfaa_uas_cert_num')
@@ -195,11 +191,11 @@ def submit():
     camera_opvalid_until= request.args.get('camera_opvalid_until')
     camera_opama_num= request.args.get('camera_opama_num')
     drone_oppilot = request.args.get('drone_oppilot')
-    drone_oppic_title = request.args.get('drone_oppic_title')
-    drone_opfaa_uas_cert_num= request.args.get('drone_opfaa_uas_cert_num')
-    drone_opissue_on= request.args.get('drone_opissue_on')
-    drone_opvalid_until= request.args.get('drone_opvalid_until')
-    drone_opama_num= request.args.get('drone_opama_num')
+    # drone_oppic_title = request.args.get('drone_oppic_title')
+    # drone_opfaa_uas_cert_num= request.args.get('drone_opfaa_uas_cert_num')
+    # drone_opissue_on= request.args.get('drone_opissue_on')
+    # drone_opvalid_until= request.args.get('drone_opvalid_until')
+    # drone_opama_num= request.args.get('drone_opama_num')
     # vis_obspilot = request.args.get('vis_obspilot')
     # vis_obspic_title = request.args.get('vis_obspic_title')
     # vis_obsfaa_uas_cert_num= request.args.get('vis_obsfaa_uas_cert_num')
@@ -211,27 +207,34 @@ def submit():
     long= request.args.get('long')
     temp= request.args.get('temp')
     temp_text= request.args.get('temp_text')
+    mission= request.args.get('mission')
 
 # vis_obs
 # pilot, pic_title,faa_uas_cert_num, issue_on, valid_until, ama_num
-    def db_query(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
-            drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-
-            selected_model,lat,long, temp, temp_text):
+    def db_query(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,drone_oppilot,
+            selected_model,lat,long, temp, temp_text,mission):
+            db = Database()
+            submit = db.submit_form(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,drone_oppilot,
+            selected_model,lat,long, temp, temp_text,mission)
+            return submit
             # (camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
             #         drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
             #         vis_obspilot, vis_obspic_title,vis_obsfaa_uas_cert_num, vis_obsissue_on, vis_obsvalid_until, vis_obsama_num,
             #         selected_model,lat,long, temp, temp_text):
-        db = Database()
-        submit = db.submit_form(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
-        drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-        selected_model,lat,long, temp, temp_text)
-        # db.commit()
-        return submit
     res = db_query(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
-        drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
-        selected_model,lat,long, temp, temp_text)
+        drone_oppilot,
+        selected_model,lat,long, temp, temp_text, mission)
     return flask.jsonify({"results": res})
+    #     submit = db.submit_form(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
+    #     drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
+    #     selected_model,lat,long, temp, temp_text)
+    #     # db.commit()
+    #     return submit
+    # res = db_query(camera_oppilot, camera_oppic_title,camera_opfaa_uas_cert_num, camera_opissue_on, camera_opvalid_until, camera_opama_num,
+    #     drone_oppilot, drone_oppic_title,drone_opfaa_uas_cert_num, drone_opissue_on, drone_opvalid_until, drone_opama_num,
+    #     selected_model,lat,long, temp, temp_text)
+    # return flask.jsonify({"results": res})
+
     #curr date
     # //pilot
     # selectedPilot
@@ -302,20 +305,46 @@ if __name__ == "__main__":
 
 """
 
-CREATE TABLE `DroneOp`.`flight_log` (
-  `date` DATETIME NOT NULL,
-  `pilot` VARCHAR(45) NULL,
-  `pilot_pic_title` VARCHAR(45) NULL,
-  `pilot_faa_uas_cert_num` VARCHAR(45) NULL,
-  `pilot_issue_on` VARCHAR(45) NULL,
-  `pilot_valid_until` VARCHAR(45) NULL,
-  `pilot_ama_num` VARCHAR(45) NULL,
-  `drone_model` VARCHAR(45) NULL,
-  `drone` VARCHAR(45) NULL,
+camera_oppilot = request.args.get('camera_oppilot')
+camera_oppic_title = request.args.get('camera_oppic_title')
+camera_opfaa_uas_cert_num= request.args.get('camera_opfaa_uas_cert_num')
+camera_opissue_on= request.args.get('camera_opissue_on')
+camera_opvalid_until= request.args.get('camera_opvalid_until')
+camera_opama_num= request.args.get('camera_opama_num')
+drone_oppilot = request.args.get('drone_oppilot')
+# drone_oppic_title = request.args.get('drone_oppic_title')
+# drone_opfaa_uas_cert_num= request.args.get('drone_opfaa_uas_cert_num')
+# drone_opissue_on= request.args.get('drone_opissue_on')
+# drone_opvalid_until= request.args.get('drone_opvalid_until')
+# drone_opama_num= request.args.get('drone_opama_num')
+# vis_obspilot = request.args.get('vis_obspilot')
+# vis_obspic_title = request.args.get('vis_obspic_title')
+# vis_obsfaa_uas_cert_num= request.args.get('vis_obsfaa_uas_cert_num')
+# vis_obsissue_on= request.args.get('vis_obsissue_on')
+# vis_obsvalid_until= request.args.get('vis_obsvalid_until')
+# vis_obsama_num= request.args.get('vis_obsama_num')
+selected_model= request.args.get('selected_model')
+lat= request.args.get('lat')
+long= request.args.get('long')
+temp= request.args.get('temp')
+temp_text= request.args.get('temp_text')
+mission= request.args.get('mission')
+
+
+CREATE TABLE `DroneOp`.`log` (
+  `datetime` DATETIME NOT NULL,
+  `camera_oppilot` VARCHAR(45) NULL,
+  `camera_opfaa_uas_cert_num` VARCHAR(45) NULL,
+  `camera_opissue_on` VARCHAR(45) NULL,
+  `camera_opvalid_until` VARCHAR(45) NULL,
+  `camera_opama_num` VARCHAR(45) NULL,
+  `drone_oppilot` VARCHAR(45) NULL,
+  `selected_model` VARCHAR(45) NULL,
   `lat` VARCHAR(45) NULL,
   `long` VARCHAR(45) NULL,
   `temp` VARCHAR(45) NULL,
   `tempText` VARCHAR(45) NULL,
+  `mission` VARCHAR(500) NULL,
   PRIMARY KEY (`date`));
 
 
